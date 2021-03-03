@@ -15,6 +15,9 @@ class MigrationController extends Controller
      */
     public function __invoke(Request $request)
     {
-        logger()->info(json_encode($request->all()));
+        logger()->info(json_encode($request->input('user')));
+        logger()->info(json_encode($request->input('user.name')));
+        logger()->info(json_encode($request->input('user')['name']));
+        logger()->info(json_encode($request->input('user')->name));
     }
 }

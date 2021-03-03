@@ -15,5 +15,5 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::middleware('auth:api')->group(function () {
-    Route::get('/user', MigrationController::class);
+    Route::get('migrate', MigrationController::class);
 });

@@ -16,7 +16,7 @@ class MigrationController extends Controller
      */
     public function __invoke(Request $request)
     {
-        if ($request->input('user.name') !== env('ESA_USER')) {
+        if ($request->input('user.screen_name') !== env('ESA_USER')) {
             abort(Response::HTTP_FORBIDDEN);
         }
 

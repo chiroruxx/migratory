@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-Route::get('migrate', MigrationController::class);
+Route::post('migrate', MigrationController::class);
 
 Route::middleware('auth:api')->group(function () {
     //

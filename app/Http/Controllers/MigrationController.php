@@ -15,6 +15,6 @@ class MigrationController extends Controller
      */
     public function __invoke(Request $request)
     {
-        var_dump($request->all());
+        logger()->info('request', $request->all());
     }
 }

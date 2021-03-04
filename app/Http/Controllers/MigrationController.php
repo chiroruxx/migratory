@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Entities\Esa\Post;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
@@ -20,8 +21,7 @@ class MigrationController extends Controller
             abort(Response::HTTP_FORBIDDEN);
         }
 
-        logger()->info(json_encode($request->input('user')));
-        logger()->info(json_encode($request->input('user.name')));
-        logger()->info(json_encode($request->input('user')['name']));
+        $post = Post::createFrom($request->input('post'));
+        logger()->info(var_export($post, true));
     }
 }

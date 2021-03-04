@@ -13,7 +13,9 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-Route::post('migrate', MigrationController::class);
+Route::name('api_')->group(function () {
+    Route::post('migrate', MigrationController::class)->name('migrate');
+});
 
 Route::middleware('auth:api')->group(function () {
     //

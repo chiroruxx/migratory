@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Converters\EsaConverter;
+use App\Converters\HatenaConverter;
 use Illuminate\Contracts\Support\DeferrableProvider;
 use Illuminate\Support\ServiceProvider;
 
@@ -14,6 +15,7 @@ class ConverterProvider extends ServiceProvider implements DeferrableProvider
 {
     public array $singletons = [
         EsaConverter::class => EsaConverter::class,
+        HatenaConverter::class => HatenaConverter::class,
     ];
 
     /**
@@ -21,6 +23,6 @@ class ConverterProvider extends ServiceProvider implements DeferrableProvider
      */
     public function provides(): array
     {
-        return [EsaConverter::class];
+        return [EsaConverter::class, HatenaConverter::class];
     }
 }

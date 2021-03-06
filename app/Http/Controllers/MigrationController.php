@@ -27,7 +27,7 @@ class MigrationController extends Controller
 
         $esa = Post::createFrom($request->input('post'));
         $post = $esaConverter->convertFromEsa($esa);
-        $hatena = $hatenaConverter->convertToHatena($post);
-        logger()->info(var_export($hatena, true));
+        $hatena = $hatenaConverter->convertToHatena($post)->toXml();
+        logger()->info($hatena);
     }
 }

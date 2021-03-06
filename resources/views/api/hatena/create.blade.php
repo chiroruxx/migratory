@@ -14,9 +14,7 @@
     @if($post->hasAuthor())
         <author><name>{{ $post->getAuthor() }}</name></author>
     @endif
-    <content type="text/plain">
-        {{ $post->getContent() }}
-    </content>
+    <content type="text/plain">{{ $post->getContent() }}</content>
     @if($post->hasUpdated())
         <updated>{{ $post->getUpdated() }}</updated>
     @endif

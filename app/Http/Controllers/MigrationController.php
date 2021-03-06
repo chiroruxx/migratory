@@ -27,7 +27,7 @@ class MigrationController extends Controller
 
         $hatenaID = env('HATENA_NAME');
         $blogID = env('HATENA_URL');
-        $response = Http::withBasicAuth($hatenaID, env('HATENA_PASSWORD'))
+        $response = Http::withBasicAuth($hatenaID, env('HATENA_KEY'))
             ->withBody($hatena, 'application/atomsvc+xml')
             ->post("https://blog.hatena.ne.jp/{$hatenaID}/{$blogID}/atom/entry");
 

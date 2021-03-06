@@ -80,6 +80,6 @@ class Post
      */
     public function toXml(): string
     {
-        return view('api/hatena/create')->render();
+        return view('api/hatena/create', ['post' => $this])->render();
     }
 }

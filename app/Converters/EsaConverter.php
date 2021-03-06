@@ -20,7 +20,7 @@ class EsaConverter
      */
     public function convertFromEsa(EsaPost $esa): Post
     {
-        $title = $esa->getName();
+        $title = $esa->getLastName();
         $content = $esa->getBodyAsMarkDown();
 
         return new Post($title, $this->convertContent($content));

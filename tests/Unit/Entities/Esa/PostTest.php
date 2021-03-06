@@ -39,16 +39,19 @@ class PostTest extends TestCase
         ];
     }
 
-    private function createDefaultData(): array
+    private function createDefaultData(array $override = []): array
     {
-        return [
-            'name' => 'test',
-            'body_md' => 'test',
-            'body_html' => 'test',
-            'wip' => true,
-            'number' => 1,
-            'url' => 'test',
-        ];
+        return array_merge(
+            [
+                'name' => 'test',
+                'body_md' => 'test',
+                'body_html' => 'test',
+                'wip' => true,
+                'number' => 1,
+                'url' => 'test',
+            ],
+            $override
+        );
     }
 
     private function createDroppedData(array $dropKeys): array
@@ -60,5 +63,24 @@ class PostTest extends TestCase
         }
 
         return $data;
+    }
+
+    /**
+     * @dataProvider dataProviderForGetLastName
+     * @param string $name
+     * @param string $expected
+     */
+    public function testGetLastName(string $name, string $expected): void
+    {
+        $post = Post::createFrom($this->createDefaultData(['name' => $name]));
+        $this->assertSame($expected, $post->getLastName());
+    }
+
+    public function dataProviderForGetLastName(): array
+    {
+        return [
+            ['name' => '/blog/post/post_name', 'expected' => 'post_name'],
+            ['name' => 'post_name', 'expected' => 'post_name'],
+        ];
     }
 }

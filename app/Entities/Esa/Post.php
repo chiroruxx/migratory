@@ -34,11 +34,17 @@ class Post
     }
 
     /**
+     * Get last name of the name path.
+     *
+     * e.g. /blog/post/post_name => post_name
+     *
      * @return string
      */
-    public function getName(): string
+    public function getLastName(): string
     {
-        return $this->name;
+        $parsed = explode('/', $this->name);
+
+        return end($parsed);
     }
 
     /**

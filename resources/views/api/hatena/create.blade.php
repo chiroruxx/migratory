@@ -4,7 +4,10 @@
  */
 @endphp
 
-{{ '<?xml version="1.0" encoding="utf-8"?>' }}
+@php
+  echo '<?xml version="1.0" encoding="utf-8"?>';
+@endphp
+
 <entry xmlns="http://www.w3.org/2005/Atom"
        xmlns:app="http://www.w3.org/2007/app">
     <title>{{ $post->getTitle() }}</title>

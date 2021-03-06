@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-
 namespace App\Entities\Esa;
 
 use InvalidArgumentException;
@@ -13,6 +12,8 @@ use InvalidArgumentException;
  */
 class Post
 {
+    // phpcs:disable Generic.WhiteSpace.ScopeIndent.IncorrectExact
+
     /**
      * Post constructor.
      * @param string $name
@@ -29,8 +30,8 @@ class Post
         private bool $wip,
         private int $number,
         private string $url
-    )
-    {
+    ) {
+        // phpcs:enable
     }
 
     /**

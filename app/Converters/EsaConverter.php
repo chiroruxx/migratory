@@ -38,6 +38,7 @@ class EsaConverter
 
         $convertedLines = [];
         foreach ($lines as $line) {
+            // phpcs:ignore PSR2.Methods.FunctionCallSignature.SpaceBeforeOpenBracket
             $line = match (true) {
                 /*
                  * Convert skip when matches these case.
@@ -46,12 +47,14 @@ class EsaConverter
                  * - List line
                  */
                 str_ends_with($line, '  '),
-                preg_match('/^# /', $line) === 1,
-                preg_match('/^ *(-|\*|\d+\.) /', $line) === 1 => $line,
+                    preg_match('/^# /', $line) === 1,
+                    preg_match('/^ *(-|\*|\d+\.) /', $line) === 1 => $line,
                 // Esa automatically changes "\n" to "  "(indention)
+                // phpcs:ignore Generic.WhiteSpace.ScopeIndent.IncorrectExact
                 default => "{$line}  ",
             };
 
+            // phpcs:ignore Generic.WhiteSpace.ScopeIndent.Incorrect
             $convertedLines[] = $line;
         }
 

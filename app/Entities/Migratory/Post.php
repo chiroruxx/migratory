@@ -10,6 +10,8 @@ namespace App\Entities\Migratory;
  */
 class Post
 {
+    // phpcs:disable Generic.WhiteSpace.ScopeIndent.IncorrectExact
+
     /**
      * Post constructor.
      * @param string $title
@@ -18,8 +20,8 @@ class Post
     public function __construct(
         private string $title,
         private string $content
-    )
-    {
+    ) {
+        // phpcs:enable
     }
 
     public function getTitle(): string

@@ -14,6 +14,8 @@ use LogicException;
  */
 class Post
 {
+    // phpcs:disable Generic.WhiteSpace.ScopeIndent.IncorrectExact
+
     public function __construct(
         private string $title,
         private string $content,
@@ -21,8 +23,8 @@ class Post
         private Collection $categories,
         private ?string $author = null,
         private ?Carbon $updated = null,
-    )
-    {
+    ) {
+        // phpcs:enable
     }
 
     public function getTitle(): string

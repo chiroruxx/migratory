@@ -7,6 +7,7 @@ use App\Converters\HatenaConverter;
 use App\Entities\Esa\Post;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Http;
 
 /**
  * Class MigrationController
@@ -14,12 +15,7 @@ use Illuminate\Http\Response;
  */
 class MigrationController extends Controller
 {
-    /**
-     * @param Request $request
-     * @param EsaConverter $esaConverter
-     * @param HatenaConverter $hatenaConverter
-     */
-    public function __invoke(Request $request, EsaConverter $esaConverter, HatenaConverter $hatenaConverter)
+    public function __invoke(Request $request, EsaConverter $esaConverter, HatenaConverter $hatenaConverter): Response
     {
         if ($request->input('user.screen_name') !== env('ESA_USER')) {
             abort(Response::HTTP_FORBIDDEN);
@@ -28,6 +24,13 @@ class MigrationController extends Controller
         $esa = Post::createFrom($request->input('post'));
         $post = $esaConverter->convertFromEsa($esa);
         $hatena = $hatenaConverter->convertToHatena($post)->toXml();
-        logger()->info($hatena);
+
+        $hatenaID = env('HATENA_NAME');
+        $blogID = env('HATENA_URL');
+        Http::withBasicAuth($hatenaID, env('HATENA_PASSWORD'))
+            ->withBody($hatena, 'application/atomsvc+xml')
+            ->post("https://blog.hatena.ne.jp/{$hatenaID}/{$blogID}/atom/entry");
+
+        return response()->noContent();
     }
 }

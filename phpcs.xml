@@ -15,6 +15,13 @@
         <exclude-pattern>/tests/</exclude-pattern>
     </rule>
 
+    <rule ref="SlevomatCodingStandard.TypeHints.ReturnTypeHint">
+        <exclude name="SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingTraversableTypeHintSpecification"/>
+        <exclude name="SlevomatCodingStandard.TypeHints.ReturnTypeHint.UselessAnnotation"/>
+    </rule>
+
+    <rule ref="SlevomatCodingStandard.Functions.RequireArrowFunction"/>
+
     <exclude-pattern>/bootstrap/</exclude-pattern>
     <exclude-pattern>/public/</exclude-pattern>
     <exclude-pattern>/resources/</exclude-pattern>

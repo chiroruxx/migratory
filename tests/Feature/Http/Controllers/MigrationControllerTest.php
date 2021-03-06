@@ -13,7 +13,7 @@ class MigrationControllerTest extends TestCase
 
     private const ROUTE_MIGRATE = 'api_migrate';
 
-    public function testMigration_abortWithInvalidName()
+    public function testMigration_abortWithInvalidName(): void
     {
         $cache = env('ESA_USER');
 
@@ -32,7 +32,7 @@ class MigrationControllerTest extends TestCase
         env('ESA_USER', $cache);
     }
 
-    public function testMigration()
+    public function testMigration(): void
     {
         $cache = env('ESA_USER');
 

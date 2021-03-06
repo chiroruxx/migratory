@@ -60,7 +60,7 @@ class EsaConverterTest extends TestCase
     /**
      * @throws ReflectionException
      */
-    public function testConvertFromEsa_convertTitle()
+    public function testConvertFromEsa_convertTitle(): void
     {
         $title = 'test title';
 

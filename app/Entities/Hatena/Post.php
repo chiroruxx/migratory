@@ -77,8 +77,6 @@ class Post
 
     /**
      * Get post as XML.
-     *
-     * @return string
      */
     public function toXml(): string
     {

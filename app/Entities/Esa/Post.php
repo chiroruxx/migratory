@@ -38,8 +38,6 @@ class Post
      * Get last name of the name path.
      *
      * e.g. /blog/post/post_name => post_name
-     *
-     * @return string
      */
     public function getLastName(): string
     {
@@ -48,9 +46,6 @@ class Post
         return end($parsed);
     }
 
-    /**
-     * @return string
-     */
     public function getBodyAsMarkDown(): string
     {
         return $this->bodyMd;
@@ -60,7 +55,6 @@ class Post
      * Create post from array.
      *
      * @param array $data
-     * @return self
      */
     public static function createFrom(array $data): self
     {

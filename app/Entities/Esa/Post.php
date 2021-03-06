@@ -34,6 +34,22 @@ class Post
     }
 
     /**
+     * @return string
+     */
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    /**
+     * @return string
+     */
+    public function getBodyAsMarkDown(): string
+    {
+        return $this->bodyMd;
+    }
+
+    /**
      * Create post from array.
      *
      * @param array $data

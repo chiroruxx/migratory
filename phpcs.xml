@@ -2,6 +2,9 @@
 <ruleset name="migratory">
     <arg name="extensions" value="php"/>
     <arg name="colors"/>
+
+    <config name="installed_paths" value="../../slevomat/coding-standard"/>
+
     <arg value="ps"/>
 
     <rule ref="PSR12"/>

@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-Route::name('api_')->group(function (): void {
+Route::name('api_')->middleware('auth.esa')->group(function (): void {
     Route::post('migrate', MigrationController::class)->name('migrate');
 });
 

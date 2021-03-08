@@ -25,7 +25,9 @@ class EsaAuthenticate
     public function handle(Request $request, Closure $next): mixed
     {
         $body = $request->getContent();
-        logger()->info(var_export($body, true));
+        $hash = hash_hmac('sha256', $body, env('ESA_SECRET'));
+        logger()->info('calced', ['hash' => $hash]);
+        logger()->info('header', ['hash' => $request->header(' X-Esa-Signature')]);
 
         return $next($request);
     }

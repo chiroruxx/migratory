@@ -24,7 +24,7 @@ class EsaAuthenticate
      */
     public function handle(Request $request, Closure $next): mixed
     {
-        $body = $request->json();
+        $body = $request->getContent();
         logger()->info(var_export($body, true));
 
         return $next($request);

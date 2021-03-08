@@ -6,6 +6,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 /**
  * Class EsaAuthenticate
@@ -18,17 +19,25 @@ class EsaAuthenticate
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
+     * @param \Illuminate\Http\Request $request
+     * @param \Closure $next
      * @return mixed
      */
     public function handle(Request $request, Closure $next): mixed
     {
-        $body = $request->getContent();
-        $hash = hash_hmac('sha256', $body, env('ESA_SECRET'));
-        logger()->info('calced', ['hash' => "sha256={$hash}"]);
-        logger()->info('header', ['hash' => $request->header(' X-Esa-Signature')]);
-        logger()->info('header', ['headers' => $request->headers->all()]);
+        $calculated = 'sha256=' . hash_hmac('sha256', $request->getContent(), env('ESA_SECRET'));
+        $given = $request->header('x-esa-signature');
+
+        if ($calculated !== $given) {
+            logger()->info(
+                'Esa auth failed.',
+                [
+                    'calculated' => $calculated,
+                    'given' => $given,
+                ]
+            );
+            abort(Response::HTTP_UNAUTHORIZED);
+        }
 
         return $next($request);
     }

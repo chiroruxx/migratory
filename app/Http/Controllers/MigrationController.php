@@ -19,10 +19,6 @@ class MigrationController extends Controller
 {
     public function __invoke(Request $request, EsaConverter $esaConverter, HatenaConverter $hatenaConverter): Response
     {
-        if ($request->input('user.screen_name') !== env('ESA_USER')) {
-            abort(Response::HTTP_FORBIDDEN);
-        }
-
         $esa = Post::createFrom($request->input('post'));
         $post = $esaConverter->convertFromEsa($esa);
         $hatena = $hatenaConverter->convertToHatena($post)->toXml();

@@ -26,8 +26,9 @@ class EsaAuthenticate
     {
         $body = $request->getContent();
         $hash = hash_hmac('sha256', $body, env('ESA_SECRET'));
-        logger()->info('calced', ['hash' => $hash]);
+        logger()->info('calced', ['hash' => "sha256={$hash}"]);
         logger()->info('header', ['hash' => $request->header(' X-Esa-Signature')]);
+        logger()->info('header', ['headers' => $request->headers->all()]);
 
         return $next($request);
     }

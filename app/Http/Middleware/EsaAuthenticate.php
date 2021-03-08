@@ -7,6 +7,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 /**
  * Class EsaAuthenticate
@@ -25,7 +26,7 @@ class EsaAuthenticate
      */
     public function handle(Request $request, Closure $next): mixed
     {
-        $calculated = 'sha256=' . hash_hmac('sha256', $request->getContent(), env('ESA_SECRET'));
+        $calculated = 'sha256=' . hash_hmac('sha256', $request->getContent(), env('ESA_SECRET', ''));
         $given = $request->header('x-esa-signature');
 
         if ($calculated !== $given) {
@@ -36,7 +37,8 @@ class EsaAuthenticate
                     'given' => $given,
                 ]
             );
-            abort(Response::HTTP_UNAUTHORIZED);
+
+            throw new HttpException(Response::HTTP_UNAUTHORIZED);
         }
 
         return $next($request);

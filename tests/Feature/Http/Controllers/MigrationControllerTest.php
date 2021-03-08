@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Feature\Http\Controllers;
 
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Facades\Http;
 use Tests\TestCase;
 
 class MigrationControllerTest extends TestCase
@@ -13,38 +14,16 @@ class MigrationControllerTest extends TestCase
 
     private const ROUTE_MIGRATE = 'api_migrate';
 
-    public function testMigration_abortWithInvalidName(): void
-    {
-        $cache = env('ESA_USER');
-
-        env('ESA_USER', 'some user');
-
-        $this->postJson(
-            route(
-                self::ROUTE_MIGRATE,
-                [
-                    'user' => ['screen_name' => 'not expected user']
-                ]
-            )
-        )
-            ->assertForbidden();
-
-        env('ESA_USER', $cache);
-    }
-
     public function testMigration(): void
     {
-        $cache = env('ESA_USER');
-
-        env('ESA_USER', 'user');
+        Http::fake();
 
         $parameter = $this->createRequestData();
-        $parameter['user']['screen_name'] = env('ESA_USER');
+        $calculated = 'sha256=' . hash_hmac('sha256', json_encode($parameter), env('ESA_SECRET', ''));
 
-        $this->postJson(route(self::ROUTE_MIGRATE), $parameter);
-        $this->assertSame(1, 1);
-
-        env('ESA_USER', $cache);
+        $this->withHeader('x-esa-signature', $calculated)
+            ->postJson(route(self::ROUTE_MIGRATE), $parameter)
+            ->assertNoContent();
     }
 
     /**

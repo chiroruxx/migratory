@@ -29,7 +29,7 @@ class EsaAuthenticate
         $calculated = 'sha256=' . hash_hmac('sha256', $request->getContent(), config('esa.secret'));
         $given = $request->header('x-esa-signature');
 
-        if ($calculated !== $given) {
+        if (!hash_equals($calculated, $given)) {
             logger()->info(
                 'Esa auth failed.',
                 [

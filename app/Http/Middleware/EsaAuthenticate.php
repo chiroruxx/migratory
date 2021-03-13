@@ -26,7 +26,7 @@ class EsaAuthenticate
      */
     public function handle(Request $request, Closure $next): mixed
     {
-        $calculated = 'sha256=' . hash_hmac('sha256', $request->getContent(), env('ESA_SECRET', ''));
+        $calculated = 'sha256=' . hash_hmac('sha256', $request->getContent(), config('esa.secret'));
         $given = $request->header('x-esa-signature');
 
         if ($calculated !== $given) {

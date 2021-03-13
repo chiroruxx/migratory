@@ -23,9 +23,9 @@ class MigrationController extends Controller
         $post = $esaConverter->convertFromEsa($esa);
         $hatena = $hatenaConverter->convertToHatena($post)->toXml();
 
-        $hatenaID = env('HATENA_NAME');
-        $blogID = env('HATENA_URL');
-        $response = Http::withBasicAuth($hatenaID, env('HATENA_KEY'))
+        $hatenaID = config('hatena.name');
+        $blogID = config('hatena.url');
+        $response = Http::withBasicAuth($hatenaID, config('hatena.key'))
             ->withBody($hatena, 'application/atomsvc+xml')
             ->post("https://blog.hatena.ne.jp/{$hatenaID}/{$blogID}/atom/entry");
 

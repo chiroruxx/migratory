@@ -19,7 +19,7 @@ class MigrationControllerTest extends TestCase
         Http::fake();
 
         $parameter = $this->createRequestData();
-        $calculated = 'sha256=' . hash_hmac('sha256', json_encode($parameter), env('ESA_SECRET', ''));
+        $calculated = 'sha256=' . hash_hmac('sha256', json_encode($parameter), config('esa.secret'));
 
         $this->withHeader('x-esa-signature', $calculated)
             ->postJson(route(self::ROUTE_MIGRATE), $parameter)

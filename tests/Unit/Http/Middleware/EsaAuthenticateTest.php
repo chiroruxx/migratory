@@ -6,6 +6,7 @@ namespace Tests\Unit\Http\Middleware;
 
 use App\Http\Middleware\EsaAuthenticate;
 use Closure;
+use Illuminate\Contracts\Config\Repository as Config;
 use Illuminate\Http\Request;
 use Illuminate\Log\LogManager;
 use Mockery;
@@ -28,7 +29,8 @@ class EsaAuthenticateTest extends TestCase
 
     private ?EsaAuthenticate $middleware;
     private Request | MockInterface | null $request;
-    private Closure $closure;
+    private ?Closure $closure;
+    private ?Config $config;
 
     protected function setUp(): void
     {
@@ -39,6 +41,9 @@ class EsaAuthenticateTest extends TestCase
         $this->request = Mockery::mock(Request::class);
         $this->request->shouldReceive('getContent')->andReturn($this->payload);
 
+        $this->config = Mockery::mock(Config::class);
+        app()->bind('config', fn(): Config => $this->config);
+
         $this->closure = fn(): bool => true;
     }
 
@@ -46,20 +51,18 @@ class EsaAuthenticateTest extends TestCase
     {
         $this->middleware = null;
         $this->request = null;
+        $this->closure = null;
+        $this->config = null;
         parent::tearDown();
     }
 
     public function testHandle(): void
     {
-        $this->overwriteEnv(
-            'ESA_SECRET',
-            $this->secret,
-            function (): void {
-                $this->request->shouldReceive('header')->andReturn($this->hash);
+        $this->config->shouldReceive('get')->andReturn($this->secret);
 
-                $this->assertTrue($this->middleware->handle($this->request, $this->closure));
-            }
-        );
+        $this->request->shouldReceive('header')->andReturn($this->hash);
+
+        $this->assertTrue($this->middleware->handle($this->request, $this->closure));
     }
 
     /**
@@ -71,16 +74,12 @@ class EsaAuthenticateTest extends TestCase
     {
         $this->fakeLogger();
 
-        $this->overwriteEnv(
-            'ESA_SECRET',
-            $secret,
-            function () use ($header): void {
-                $this->request->shouldReceive('header')->andReturn($header);
+        $this->config->shouldReceive('get')->andReturn($secret);
 
-                $this->expectException(HttpException::class);
-                $this->middleware->handle($this->request, $this->closure);
-            }
-        );
+        $this->request->shouldReceive('header')->andReturn($header);
+
+        $this->expectException(HttpException::class);
+        $this->middleware->handle($this->request, $this->closure);
     }
 
     public function dataProviderForHandle_invalid(): array
@@ -90,17 +89,6 @@ class EsaAuthenticateTest extends TestCase
             'invalid header' => ['secret' => $this->secret, 'header' => 'invalid'],
             'invalid both' => ['secret' => 'invalid', 'header' => 'invalid'],
         ];
-    }
-
-    private function overwriteEnv(string $key, string $value, Closure $closure): void
-    {
-        $cache = env($key, '');
-
-        putenv("{$key}={$value}");
-
-        $closure();
-
-        putenv("{$key}={$cache}");
     }
 
     private function fakeLogger(): void

@@ -54,6 +54,7 @@ class EsaConverterTest extends TestCase
             'ordered list' => ['input' => '1. test body', 'expected' => '1. test body'],
             'ordered list 2 digit' => ['input' => '10. test body', 'expected' => '10. test body'],
             'nested list' => ['input' => '  - test body', 'expected' => '  - test body'],
+            'empty line' => ['input' => '', 'expected' => ''],
         ];
     }
 

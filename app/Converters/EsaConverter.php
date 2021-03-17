@@ -51,7 +51,7 @@ class EsaConverter
                  */
                 str_ends_with($line, '  '),
                     $line === '',
-                    preg_match('/^# /', $line) === 1,
+                    preg_match('/^#+ /', $line) === 1,
                     preg_match('/^ *(-|\*|\d+\.) /', $line) === 1 => $line,
                 // Esa automatically changes "\n" to "  "(indention)
                 // phpcs:ignore Generic.WhiteSpace.ScopeIndent.IncorrectExact

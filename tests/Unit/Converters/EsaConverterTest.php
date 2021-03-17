@@ -41,6 +41,7 @@ class EsaConverterTest extends TestCase
             'should indent' => ['input' => 'test body', 'expected' => 'test body  '],
             'already indention' => ['input' => 'test body  ', 'expected' => 'test body  '],
             'heading' => ['input' => '# test body', 'expected' => '# test body'],
+            'heading2' => ['input' => '## test body', 'expected' => '## test body'],
             'list -' => ['input' => '- test body', 'expected' => '- test body'],
             'list *' => ['input' => '* test body', 'expected' => '* test body'],
             'ordered list' => ['input' => '1. test body', 'expected' => '1. test body'],

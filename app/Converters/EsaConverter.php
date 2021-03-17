@@ -43,10 +43,12 @@ class EsaConverter
                 /*
                  * Convert skip when matches these case.
                  * - Already indention line
+                 * - Empty line
                  * - Heading line
                  * - List line
                  */
                 str_ends_with($line, '  '),
+                    $line === '',
                     preg_match('/^# /', $line) === 1,
                     preg_match('/^ *(-|\*|\d+\.) /', $line) === 1 => $line,
                 // Esa automatically changes "\n" to "  "(indention)

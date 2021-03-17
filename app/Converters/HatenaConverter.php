@@ -6,6 +6,7 @@ namespace App\Converters;
 
 use App\Entities\Hatena\Post as HatenaPost;
 use App\Entities\Migratory\Post;
+use RuntimeException;
 
 /**
  * Class HatenaConverter
@@ -26,6 +27,31 @@ class HatenaConverter
         $title = $post->getTitle();
         $content = $post->getContent();
 
-        return new HatenaPost($title, $content, true, collect());
+        return new HatenaPost($title, $this->convertContent($content), true, collect());
+    }
+
+    /**
+     * Convert general markdown to hatena markdown.
+     *
+     * @param string $content
+     * @return string
+     */
+    private function convertContent(string $content): string
+    {
+        $content = str_replace(["\r\n", "\r", "\n"], PHP_EOL, $content);
+
+        $lines = explode(PHP_EOL, $content);
+
+        $convertedLines = [];
+        foreach ($lines as $line) {
+            $line = preg_replace('/^(#+) /', '##$1 ', $line);
+            if ($line === null) {
+                throw new RuntimeException("Cannot replace the line '{$line}'");
+            }
+
+            $convertedLines[] = $line;
+        }
+
+        return implode(PHP_EOL, $convertedLines);
     }
 }

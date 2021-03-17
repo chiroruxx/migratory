@@ -6,9 +6,9 @@ namespace Tests\Unit\Converters;
 
 use App\Converters\EsaConverter;
 use App\Entities\Esa\Post;
+use Mockery;
+use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use PHPUnit\Framework\TestCase;
-use ReflectionClass;
-use ReflectionException;
 
 /**
  * Class EsaConverterTest
@@ -16,31 +16,23 @@ use ReflectionException;
  */
 class EsaConverterTest extends TestCase
 {
+    use MockeryPHPUnitIntegration;
+
     /**
      * @dataProvider dataProviderForConvertFromEsa_convertContent_indention
      * @param string $input
      * @param string $expected
-     * @throws ReflectionException
      */
     public function testConvertFromEsa_convertContent_indention(string $input, string $expected): void
     {
-        $esaPost = new Post(
-            '',
-            $input,
-            '',
-            true,
-            1,
-            ''
-        );
+        $esaPost = Mockery::mock(Post::class);
+        $esaPost->shouldReceive('getLastName')->andReturn('');
+        $esaPost->shouldReceive('getBodyAsMarkDown')->andReturn($input);
 
         $converter = new EsaConverter();
         $post = $converter->convertFromEsa($esaPost);
 
-        $reflection = new ReflectionClass($post);
-        $property = $reflection->getProperty('content');
-        $property->setAccessible(true);
-
-        $this->assertSame($expected, $property->getValue($post));
+        $this->assertSame($expected, $post->getContent());
     }
 
     public function dataProviderForConvertFromEsa_convertContent_indention(): array
@@ -49,6 +41,7 @@ class EsaConverterTest extends TestCase
             'should indent' => ['input' => 'test body', 'expected' => 'test body  '],
             'already indention' => ['input' => 'test body  ', 'expected' => 'test body  '],
             'heading' => ['input' => '# test body', 'expected' => '# test body'],
+            'heading2' => ['input' => '## test body', 'expected' => '## test body'],
             'list -' => ['input' => '- test body', 'expected' => '- test body'],
             'list *' => ['input' => '* test body', 'expected' => '* test body'],
             'ordered list' => ['input' => '1. test body', 'expected' => '1. test body'],
@@ -58,29 +51,17 @@ class EsaConverterTest extends TestCase
         ];
     }
 
-    /**
-     * @throws ReflectionException
-     */
     public function testConvertFromEsa_convertTitle(): void
     {
         $title = 'test title';
 
-        $esaPost = new Post(
-            $title,
-            '',
-            '',
-            true,
-            1,
-            ''
-        );
+        $esaPost = Mockery::mock(Post::class);
+        $esaPost->shouldReceive('getLastName')->andReturn($title);
+        $esaPost->shouldReceive('getBodyAsMarkDown')->andReturn('');
 
         $converter = new EsaConverter();
         $post = $converter->convertFromEsa($esaPost);
 
-        $reflection = new ReflectionClass($post);
-        $property = $reflection->getProperty('title');
-        $property->setAccessible(true);
-
-        $this->assertSame($title, $property->getValue($post));
+        $this->assertSame($title, $post->getTitle());
     }
 }

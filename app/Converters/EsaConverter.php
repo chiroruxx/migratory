@@ -34,6 +34,8 @@ class EsaConverter
      */
     private function convertContent(string $content): string
     {
+        $content = str_replace(["\r\n", "\r", "\n"], PHP_EOL, $content);
+
         $lines = explode(PHP_EOL, $content);
 
         $convertedLines = [];

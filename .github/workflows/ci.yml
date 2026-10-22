@@ -9,7 +9,7 @@ jobs:
     steps:
       - uses: shivammathur/setup-php@master
         with:
-          php-version: '8.0'
+          php-version: '8.5'
 
       - uses: actions/checkout@v2
 
@@ -34,7 +34,7 @@ jobs:
     steps:
       - uses: shivammathur/setup-php@master
         with:
-          php-version: '8.0'
+          php-version: '8.5'
 
       - uses: actions/checkout@v2
 

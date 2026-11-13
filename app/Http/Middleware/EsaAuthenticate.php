@@ -28,6 +28,10 @@ class EsaAuthenticate
     {
         $calculated = 'sha256=' . hash_hmac('sha256', $request->getContent(), config('esa.secret'));
         $given = $request->header('x-esa-signature');
+        if (!is_string($given)) {
+            logger()->info('Esa auth failed: header is not a string.');
+            throw new HttpException(Response::HTTP_UNAUTHORIZED);
+        }
 
         if (!hash_equals($calculated, $given)) {
             logger()->info(
